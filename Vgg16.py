@@ -3,14 +3,15 @@ import numpy as np
 import time
 import pickle
 import tensorboard
+import os
 
-# MNIST_train_image_path = '/home/mo/Documents/PcProject/py3.6/Dataset/MNIST-data/train-images-idx3-ubyte.gz'
-# MNIST_train_label_path = '/home/mo/Documents/PcProject/py3.6/Dataset/MNIST-data/train-labels-idx1-ubyte.gz'
-cifar_10_path = '/home/mo/Documents/PcProject/Dataset/cifar-10-batches-py'
+# MNIST_train_image_path = '../../py3.6/Dataset/MNIST-data/train-images-idx3-ubyte.gz'
+# MNIST_train_label_path = '../../Dataset/MNIST-data/train-labels-idx1-ubyte.gz'
+cifar_10_path = '../../Dataset/cifar-10-batches-py'
 
 p = []
 batch_size = 128
-iter_size = 10000
+iter_size = 1000
 learning_rate = 0.001
 max_num = 50000
 image_height = 32
@@ -176,8 +177,8 @@ if __name__ == '__main__':
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        # new_saver = tf.train.import_meta_graph('/home/mo/Documents/PcProject/py3.6/Model/vgg/vgg16.meta')
-        # new_saver.restore(sess, tf.train.latest_checkpoint('/home/mo/Documents/PcProject/py3.6/Model/vgg'))
+        new_saver = tf.train.import_meta_graph('../Model/vgg/vgg16.meta')
+        new_saver.restore(sess, tf.train.latest_checkpoint('../Model/vgg'))
 
         for i in range(iter_size):
             for j in range(max_num // batch_size):
@@ -209,7 +210,7 @@ if __name__ == '__main__':
             acc = 0
 
             if i % 5 == 0:
-                saver.save(sess, '/home/mo/Documents/PcProject/py3.6/Model/vgg/vgg16')
+                saver.save(sess, '../Model/vgg/vgg16')
                 print('Successful Saved')
 
 
