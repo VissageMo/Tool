@@ -120,6 +120,10 @@ def alexnet(input_op):
     return net, p
 
 
+def save_model(sess, dir, epoch):
+    saver.save(sess, 'dir', global_step=epoch)
+    print('Successful Saved')
+
 # train_images, imagenum = decode_idx3_ubyte(train_image_path)
 # train_labels, labelnum = decode_idx1_ubyte(train_label_path)
 

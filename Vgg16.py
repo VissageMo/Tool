@@ -104,7 +104,7 @@ def apool(input_op, name, kh, kw, dh, dw, padding='SAME'):
                           padding=padding, name=name)
 
 
-def vgg_16(input_op):
+def vgg_16(input_op, output_size):
 
     conv1_1 = conv2(input_op, name="conv1_1", kh=3, kw=3, n_out=64, dh=1, dw=1, p=p)
     conv1_2 = conv2(conv1_1, name="conv1_2", kh=3, kw=3, n_out=64, dh=1, dw=1, p=p)
@@ -133,7 +133,7 @@ def vgg_16(input_op):
     flattened_shape = shp[1].value * shp[2].value * shp[3].value
     resh1 = tf.reshape(pool5, [-1, flattened_shape], name="resh1")
 
-    fc6 = fc(resh1, name="fc6", n_out=10)
+    fc6 = fc(resh1, name="fc6", n_out=output_size)
 
     return fc6, p
 
