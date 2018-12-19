@@ -3,11 +3,11 @@ import numpy as np
 import time
 import pickle
 import tensorboard
-import os
+from pycocotools.coco import COCO
 
 # MNIST_train_image_path = '../../py3.6/Dataset/MNIST-data/train-images-idx3-ubyte.gz'
 # MNIST_train_label_path = '../../Dataset/MNIST-data/train-labels-idx1-ubyte.gz'
-cifar_10_path = '../../Dataset/cifar-10-batches-py'
+# cifar_10_path = '../../Dataset/cifar-10-batches-py'
 
 p = []
 batch_size = 128
@@ -21,38 +21,6 @@ n_class = 10
 X = tf.placeholder(tf.float32, [None, 32, 32, 3])
 Y = tf.placeholder(tf.float32, [None, n_class])
 keep_prob = tf.placeholder(tf.float32)
-
-
-def load_cifar10_train(directory):
-    images, labels = [], []
-    for filename in ['%s/data_batch_%d' % (directory, j) for j in range(1, 6)]:
-        with open(filename, 'rb') as fo:
-            cifar10 = pickle.load(fo, encoding='bytes')
-        for i in range(len(cifar10[b"labels"])):
-            image = np.reshape(cifar10[b"data"][i], (3, 32, 32))
-            image = np.transpose(image, (1, 2, 0))
-            image = image.astype(float)
-            images.append(image)
-        labels += cifar10[b"labels"]
-    images = np.array(images, dtype='float32')
-    labels = np.array(labels, dtype='int')
-    return images, labels
-
-
-def load_cifar10_test(directory):
-    images, labels = [], []
-    for filename in ['%s/test_batch' % (directory)]:
-        with open(filename, 'rb') as fo:
-                cifar10 = pickle.load(fo, encoding='bytes')
-        for i in range(len(cifar10[b"labels"])):
-            image = np.reshape(cifar10[b"data"][i], (3, 32, 32))
-            image = np.transpose(image, (1, 2, 0))
-            image = image.astype(float)
-            images.append(image)
-        labels += cifar10[b"labels"]
-    images = np.array(images, dtype='float32')
-    labels = np.array(labels, dtype='int')
-    return images, labels
 
 
 def variable_with_weight_loss(shape, stddev, wl):
@@ -189,7 +157,7 @@ if __name__ == '__main__':
 
                 # sess.run(optimizer, feed_dict={X: batch_x, Y: batch_y, keep_prob: 1.})
 
-                _, cost= sess.run([optimizer, loss], feed_dict={X: batch_x, Y: batch_y, keep_prob: 1.})
+                _, cost = sess.run([optimizer, loss], feed_dict={X: batch_x, Y: batch_y, keep_prob: 1.})
                 acc += sess.run(accuracy, feed_dict={X: batch_x, Y: batch_y, keep_prob: 1.})
 
                 # if j % 15 == 0:
